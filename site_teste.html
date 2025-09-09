@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TesteFácil - Plataforma de Prática em Teste de Software</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            padding: 20px 0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        nav {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-tabs {
+            display: flex;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        .nav-tabs li {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .nav-tabs a {
+            display: block;
+            padding: 10px 20px;
+            background-color: var(--light);
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-tabs a:hover, .nav-tabs a.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background-color: var(--secondary);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .test-system {
+            border: 2px solid var(--light);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .test-result {
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .success {
+            background-color: #e6f7ee;
+            color: #2ecc71;
+            border: 1px solid #2ecc71;
+        }
+        
+        .error {
+            background-color: #fde6e6;
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
+        }
+        
+        .bug-list {
+            margin-top: 20px;
+        }
+        
+        .bug-item {
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .bug-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .bug-meta {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 10px;
+        }
+        
+        .bug-desc {
+            margin-bottom: 10px;
+        }
+        
+        .severity-high {
+            border-left: 4px solid var(--danger);
+        }
+        
+        .severity-medium {
+            border-left: 4px solid var(--warning);
+        }
+        
+        .severity-low {
+            border-left: 4px solid var(--primary);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .nav-tabs li {
+                margin-right: 0;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>TesteFácil</h1>
+            <p style="text-align: center;">Plataforma de Prática em Teste de Software para Estudantes</p>
+        </header>
+        
+        <nav>
+            <ul class="nav-tabs">
+                <li><a href="#" class="tab-link active" data-tab="intro">Introdução</a></li>
+                <li><a href="#" class="tab-link" data-tab="test-system">Sistema para Testar</a></li>
+                <li><a href="#" class="tab-link" data-tab="test-cases">Casos de Teste</a></li>
+                <li><a href="#" class="tab-link" data-tab="bug-report">Registrar Defeito</a></li>
+                <li><a href="#" class="tab-link" data-tab="bug-list">Lista de Defeitos</a></li>
+            </ul>
+        </nav>
+        
+        <div id="intro" class="tab-content active">
+            <h2>Bem-vindo ao TesteFácil!</h2>
+            <p>Esta plataforma foi desenvolvida para ajudar estudantes de teste de software a praticarem suas habilidades em um ambiente controlado.</p>
+            
+            <h3>Como usar:</h3>
+            <ol>
+                <li>Acesse a aba <strong>"Sistema para Testar"</strong> para interagir com um sistema fictício que contém defeitos intencionais.</li>
+                <li>Na aba <strong>"Casos de Teste"</strong>, documente os casos de teste que você planeja executar.</li>
+                <li>Execute os testes e quando encontrar um defeito, registre-o na aba <strong>"Registrar Defeito"</strong>.</li>
+                <li>Acompanhe todos os defeitos encontrados na aba <strong>"Lista de Defeitos"</strong>.</li>
+            </ol>
+            
+            <div class="test-system">
+                <h3>Sistema de Cadastro de Usuários - Requisitos</h3>
+                <p>O sistema permite cadastrar usuários com as seguintes regras:</p>
+                <ul>
+                    <li>Nome deve ter pelo menos 2 caracteres</li>
+                    <li>Email deve ter formato válido</li>
+                    <li>Senha deve ter pelo menos 6 caracteres</li>
+                    <li>Idade deve ser entre 18 e 120 anos</li>
+                    <li>Todos os campos são obrigatórios</li>
+                </ul>
+                <p><strong>Desafio:</strong> Encontre pelo menos 5 defeitos neste sistema!</p>
+                <p><strong>Dica:</strong> Os dados são salvos apenas na memória do navegador e serão perdidos ao recarregar a página.</p>
+            </div>
+        </div>
+        
+        <div id="test-system" class="tab-content">
+            <h2>Sistema de Cadastro de Usuários</h2>
+            <p>Interaja com o sistema abaixo para testar suas funcionalidades. Tente encontrar o máximo de defeitos possível.</p>
+            
+            <div class="form-group">
+                <label for="name">Nome completo*</label>
+                <input type="text" id="name" placeholder="Digite seu nome">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email*</label>
+                <input type="email" id="email" placeholder="Digite seu email">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Senha*</label>
+                <input type="password" id="password" placeholder="Digite sua senha">
+            </div>
+            
+            <div class="form-group">
+                <label for="age">Idade*</label>
+                <input type="number" id="age" placeholder="Digite sua idade">
+            </div>
+            
+            <button class="btn" id="register-btn">Cadastrar</button>
+            <button class="btn btn-danger" id="clear-form-btn">Limpar Formulário</button>
+            <button class="btn btn-danger" id="clear-users-btn">Limpar Usuários</button>
+            
+            <div id="test-result" class="test-result"></div>
+            
+            <div id="user-list" style="margin-top: 30px;">
+                <h3>Usuários Cadastrados</h3>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 15px;" border="1">
+                    <thead>
+                        <tr>
+                            <th style="padding: 10px;">Nome</th>
+                            <th style="padding: 10px;">Email</th>
+                            <th style="padding: 10px;">Idade</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-table-body">
+                        <!-- Os usuários cadastrados aparecerão aqui -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div id="test-cases" class="tab-content">
+            <h2>Gerenciar Casos de Teste</h2>
+            
+            <div class="form-group">
+                <label for="test-case-id">ID do Caso de Teste</label>
+                <input type="text" id="test-case-id" placeholder="Ex: CT001">
+            </div>
+            
+            <div class="form-group">
+                <label for="test-case-desc">Descrição do Caso de Teste*</label>
+                <textarea id="test-case-desc" placeholder="Descreva o objetivo deste caso de teste"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="test-case-steps">Passos para Execução*</label>
+                <textarea id="test-case-steps" placeholder="Descreva os passos para executar o teste"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="test-case-expected">Resultado Esperado*</label>
+                <textarea id="test-case-expected" placeholder="Descreva o resultado esperado"></textarea>
+            </div>
+            
+            <button class="btn" id="add-test-case">Adicionar Caso de Teste</button>
+            <button class="btn btn-danger" id="clear-test-cases">Limpar Casos de Teste</button>
+            
+            <div id="test-cases-list" style="margin-top: 30px;">
+                <h3>Casos de Teste Criados</h3>
+                <div id="test-cases-container">
+                    <!-- Os casos de teste aparecerão aqui -->
+                </div>
+            </div>
+        </div>
+        
+        <div id="bug-report" class="tab-content">
+            <h2>Registrar Defeito Encontrado</h2>
+            
+            <div class="form-group">
+                <label for="bug-title">Título do Defeito*</label>
+                <input type="text" id="bug-title" placeholder="Descreva resumidamente o defeito">
+            </div>
+            
+            <div class="form-group">
+                <label for="bug-desc">Descrição Detalhada*</label>
+                <textarea id="bug-desc" placeholder="Descreva o defeito em detalhes"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="bug-steps">Passos para Reproduzir*</label>
+                <textarea id="bug-steps" placeholder="Descreva os passos para reproduzir o defeito"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="bug-expected">Comportamento Esperado*</label>
+                <textarea id="bug-expected" placeholder="Descreva qual era o comportamento esperado"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="bug-severity">Gravidade</label>
+                <select id="bug-severity">
+                    <option value="high">Alta</option>
+                    <option value="medium">Média</option>
+                    <option value="low">Baixa</option>
+                </select>
+            </div>
+            
+            <button class="btn btn-danger" id="report-bug">Registrar Defeito</button>
+            <button class="btn" id="clear-bug-form">Limpar Formulário</button>
+            
+            <div id="bug-report-result" class="test-result"></div>
+        </div>
+        
+        <div id="bug-list" class="tab-content">
+            <h2>Defeitos Encontrados</h2>
+            <p>Lista de todos os defeitos registrados durante os testes:</p>
+            <button class="btn btn-danger" id="clear-all-bugs" style="margin-bottom: 20px;">Limpar Todos os Defeitos</button>
+            
+            <div id="bugs-container" class="bug-list">
+                <!-- Os defeitos registrados aparecerão aqui -->
+            </div>
+        </div>
+        
+        <footer>
+            <p>TesteFácil - Plataforma Educacional para Prática de Teste de Software | © 2023</p>
+        </footer>
+    </div>
+
+    <script>
+        // Sistema de abas
+        document.querySelectorAll('.tab-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove a classe active de todas as abas e conteúdos
+                document.querySelectorAll('.tab-link').forEach(tab => tab.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                // Adiciona a classe active à aba clicada
+                link.classList.add('active');
+                
+                // Mostra o conteúdo correspondente
+                const tabId = link.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Sistema de armazenamento local
+        function loadFromStorage(key) {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : [];
+        }
+        
+        function saveToStorage(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+        
+        // Inicializar dados
+        let users = loadFromStorage('testefacil_users');
+        let testCases = loadFromStorage('testefacil_testcases');
+        let bugs = loadFromStorage('testefacil_bugs');
+        
+        // Atualizar visualizações iniciais
+        updateUserTable();
+        updateTestCasesList();
+        updateBugsList();
+        
+        // Sistema de cadastro de usuários (com defeitos intencionais)
+        document.getElementById('register-btn').addEventListener('click', () => {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const age = document.getElementById('age').value;
+            
+            const resultDiv = document.getElementById('test-result');
+            resultDiv.style.display = 'block';
+            
+            // DEFEITO 1: Permite cadastro com nome vazio (não valida tamanho mínimo)
+            if (!name) {
+                resultDiv.className = 'test-result error';
+                resultDiv.innerHTML = 'Erro: Nome é obrigatório.';
+                return;
+            }
+            
+            // DEFEITO 2: Não valida formato de email corretamente (aceita emails sem @)
+            if (!email) {
+                resultDiv.className = 'test-result error';
+                resultDiv.innerHTML = 'Erro: Email é obrigatório.';
+                return;
+            }
+            
+            // DEFEITO 3: Permite senha com menos de 6 caracteres
+            if (!password) {
+                resultDiv.className = 'test-result error';
+                resultDiv.innerHTML = 'Erro: Senha é obrigatória.';
+                return;
+            }
+            
+            if (!age) {
+                resultDiv.className = 'test-result error';
+                resultDiv.innerHTML = 'Erro: Idade é obrigatória.';
+                return;
+            }
+            
+            // DEFEITO 4: Permite idade menor que 18 anos
+            // DEFEITO 5: Permite idade maior que 120 anos
+            
+            // DEFEITO 6: Não limpa os campos após o cadastro (será corrigido)
+            // DEFEITO 7: Mensagens de erro/sucesso inconsistentes (parcialmente corrigido)
+            
+            // DEFEITO 8: Não verifica se email já existe
+            users.push({ name, email, age, password });
+            saveToStorage('testefacil_users', users);
+            
+            // Atualiza a tabela de usuários
+            updateUserTable();
+            
+            resultDiv.className = 'test-result success';
+            resultDiv.innerHTML = 'Usuário cadastrado com sucesso!';
+            
+            // Limpa o formulário (corrigindo um dos defeitos)
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('age').value = '';
+        });
+        
+        // Botão para limpar formulário de cadastro
+        document.getElementById('clear-form-btn').addEventListener('click', () => {
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('age').value = '';
+            document.getElementById('test-result').style.display = 'none';
+        });
+        
+        // Botão para limpar lista de usuários
+        document.getElementById('clear-users-btn').addEventListener('click', () => {
+            if (confirm('Tem certeza que deseja limpar todos os usuários cadastrados?')) {
+                users = [];
+                saveToStorage('testefacil_users', users);
+                updateUserTable();
+            }
+        });
+        
+        function updateUserTable() {
+            const tableBody = document.getElementById('user-table-body');
+            tableBody.innerHTML = '';
+            
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="padding: 10px;">${user.name}</td>
+                    <td style="padding: 10px;">${user.email}</td>
+                    <td style="padding: 10px;">${user.age}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Sistema de casos de teste
+        document.getElementById('add-test-case').addEventListener('click', () => {
+            const id = document.getElementById('test-case-id').value;
+            const desc = document.getElementById('test-case-desc').value;
+            const steps = document.getElementById('test-case-steps').value;
+            const expected = document.getElementById('test-case-expected').value;
+            
+            if (!id || !desc || !steps || !expected) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            testCases.push({ id, desc, steps, expected });
+            saveToStorage('testefacil_testcases', testCases);
+            updateTestCasesList();
+            
+            // Limpa os campos
+            document.getElementById('test-case-id').value = '';
+            document.getElementById('test-case-desc').value = '';
+            document.getElementById('test-case-steps').value = '';
+            document.getElementById('test-case-expected').value = '';
+        });
+        
+        // Botão para limpar casos de teste
+        document.getElementById('clear-test-cases').addEventListener('click', () => {
+            if (confirm('Tem certeza que deseja limpar todos os casos de teste?')) {
+                testCases = [];
+                saveToStorage('testefacil_testcases', testCases);
+                updateTestCasesList();
+            }
+        });
+        
+        function updateTestCasesList() {
+            const container = document.getElementById('test-cases-container');
+            container.innerHTML = '';
+            
+            testCases.forEach(testCase => {
+                const div = document.createElement('div');
+                div.className = 'bug-item';
+                div.innerHTML = `
+                    <div class="bug-title">${testCase.id}: ${testCase.desc}</div>
+                    <div class="bug-meta"><strong>Passos:</strong> ${testCase.steps}</div>
+                    <div class="bug-meta"><strong>Resultado Esperado:</strong> ${testCase.expected}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+        
+        // Sistema de registro de defeitos
+        document.getElementById('report-bug').addEventListener('click', () => {
+            const title = document.getElementById('bug-title').value;
+            const desc = document.getElementById('bug-desc').value;
+            const steps = document.getElementById('bug-steps').value;
+            const expected = document.getElementById('bug-expected').value;
+            const severity = document.getElementById('bug-severity').value;
+            
+            const resultDiv = document.getElementById('bug-report-result');
+            resultDiv.style.display = 'block';
+            
+            if (!title || !desc || !steps || !expected) {
+                resultDiv.className = 'test-result error';
+                resultDiv.innerHTML = 'Por favor, preencha todos os campos obrigatórios.';
+                return;
+            }
+            
+            const bugId = 'BUG' + (bugs.length + 1).toString().padStart(3, '0');
+            bugs.push({
+                id: bugId,
+                title,
+                desc,
+                steps,
+                expected,
+                severity,
+                status: 'Reportado',
+                date: new Date().toLocaleString()
+            });
+            
+            saveToStorage('testefacil_bugs', bugs);
+            updateBugsList();
+            
+            resultDiv.className = 'test-result success';
+            resultDiv.innerHTML = `Defeito ${bugId} registrado com sucesso!`;
+            
+            // Limpa o formulário
+            document.getElementById('bug-title').value = '';
+            document.getElementById('bug-desc').value = '';
+            document.getElementById('bug-steps').value = '';
+            document.getElementById('bug-expected').value = '';
+            document.getElementById('bug-severity').value = 'high';
+        });
+        
+        // Botão para limpar formulário de defeitos
+        document.getElementById('clear-bug-form').addEventListener('click', () => {
+            document.getElementById('bug-title').value = '';
+            document.getElementById('bug-desc').value = '';
+            document.getElementById('bug-steps').value = '';
+            document.getElementById('bug-expected').value = '';
+            document.getElementById('bug-severity').value = 'high';
+            document.getElementById('bug-report-result').style.display = 'none';
+        });
+        
+        // Botão para limpar todos os defeitos
+        document.getElementById('clear-all-bugs').addEventListener('click', () => {
+            if (confirm('Tem certeza que deseja limpar todos os defeitos registrados?')) {
+                bugs = [];
+                saveToStorage('testefacil_bugs', bugs);
+                updateBugsList();
+            }
+        });
+        
+        function updateBugsList() {
+            const container = document.getElementById('bugs-container');
+            container.innerHTML = '';
+            
+            if (bugs.length === 0) {
+                container.innerHTML = '<p>Nenhum defeito registrado ainda.</p>';
+                return;
+            }
+            
+            bugs.forEach(bug => {
+                const div = document.createElement('div');
+                div.className = `bug-item severity-${bug.severity}`;
+                div.innerHTML = `
+                    <div class="bug-title">${bug.id}: ${bug.title}</div>
+                    <div class="bug-meta"><strong>Data:</strong> ${bug.date} | <strong>Gravidade:</strong> ${bug.severity} | <strong>Status:</strong> ${bug.status}</div>
+                    <div class="bug-desc"><strong>Descrição:</strong> ${bug.desc}</div>
+                    <div class="bug-meta"><strong>Passos para Reproduzir:</strong> ${bug.steps}</div>
+                    <div class="bug-meta"><strong>Comportamento Esperado:</strong> ${bug.expected}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+    </script>
+</body>
+</html>
